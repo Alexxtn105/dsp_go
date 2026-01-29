@@ -6,10 +6,14 @@
 ## Тестирование
 ### Запуск всех тестов
 ```bash
-go test ./pkg/filters/...
+go test ./pkg/...
+```
+### Запуск всех с подробным выводом
+```bash
+go test -v ./pkg/...
 ```
 
-### Запуск только БИХ-тестов
+### Запуск только КИХ-тестов
 ```bash
 go test ./pkg/filters/... -run "FIR"
 ```
@@ -24,19 +28,25 @@ go test ./pkg/filters/... -run "IIR"
 go test ./pkg/filters/... -run "Goertzel"
 ```
 
-### Запуск с подробным выводом
+### Запуск только генераторов
 ```bash
-go test -v ./pkg/filters/...
+go test ./pkg/generators/...
 ```
+
+### Запуск только генераторов
+```bash
+go test ./pkg/generators/... -run "TestInfo"
+```
+
 
 ### Запуск с покрытием кода
 ```bash
-go test -cover ./pkg/filters/...
+go test -cover ./pkg/...
 ```
 
 ### Запуск бенчмарков
 ```bash
-go test -bench=. ./pkg/filters/...
+go test -bench=./pkg/...
 ```
 
 ### Генерация godoc
