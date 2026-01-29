@@ -1,8 +1,8 @@
 package main
 
 import (
-	"dspgo/pkg/filters"
 	"fmt"
+	"github.com/Alexxtn105/dsp_go/pkg/filters"
 	//"dsp_go/pkg/filters"
 )
 

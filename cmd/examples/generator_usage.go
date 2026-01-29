@@ -1,7 +1,7 @@
 package main
 
 import (
-	"dsp_go/pkg/generators"
+	"github.com/Alexxtn105/dsp_go/pkg/generators"
 	"fmt"
 	"math"
 )

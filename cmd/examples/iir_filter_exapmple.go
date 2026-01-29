@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"dsp_go/pkg/filters"
+	"github.com/Alexxtn105/dsp_go/pkg/filters"
 )
 
 func main() {

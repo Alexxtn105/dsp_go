@@ -1,8 +1,8 @@
 package main
 
 import (
-	"dsp_go/pkg/detectors"
 	"fmt"
+	"github.com/Alexxtn105/dsp_go/pkg/detectors"
 	"math"
 	"math/cmplx"
 )
