@@ -1,9 +1,9 @@
 package main
 
 import (
+	"dspgo/pkg/filters"
 	"fmt"
-
-	"dsp_go/pkg/filters"
+	//"dsp_go/pkg/filters"
 )
 
 func main() {
