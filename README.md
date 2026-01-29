@@ -38,6 +38,10 @@ go test ./pkg/generators/...
 go test ./pkg/generators/... -run "TestInfo"
 ```
 
+### Запуск только детекторов
+```bash
+go test ./pkg/detectors/...
+```
 
 ### Запуск с покрытием кода
 ```bash
