@@ -43,7 +43,7 @@ func main() {
 
 	fmt.Printf("Target frequency: %.2f Hz\n", freq)
 	fmt.Printf("Detected magnitude: %.6f\n", magnitude)
-	fmt.Printf("Expected magnitude: ~0.5\n")
+	fmt.Printf("Expected magnitude: ~1.0\n")
 	fmt.Printf("Filter is complete: %v\n", filter.IsComplete())
 	fmt.Printf("Processed samples: %d/%d\n", filter.GetProcessedCount(), totalN)
 }

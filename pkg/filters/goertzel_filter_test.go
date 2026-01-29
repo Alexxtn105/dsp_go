@@ -350,3 +350,9 @@ func TestGoertzelFilter_MethodsConsistency(t *testing.T) {
 func contains(s, substr string) bool {
 	return len(s) >= len(substr) && (s == substr || len(s) > len(substr) && (s[:len(substr)] == substr || contains(s[1:], substr)))
 }
+
+func BenchmarkSimple(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = i * i
+	}
+}

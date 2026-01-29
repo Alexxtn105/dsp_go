@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-// TestIIRFilterBasic проверяет базовую функциональность БИХ-фильтра
-func TestIIRFilterBasic(t *testing.T) {
+// TestIIRFilter_Basic проверяет базовую функциональность БИХ-фильтра
+func TestIIRFilter_Basic(t *testing.T) {
 	// Простой БИХ-фильтр 1-го порядка: y[n] = 0.5*x[n] - 0.3*y[n-1]
 	b := []float64{0.5}
 	a := []float64{1, 0.3} // a[0] всегда 1
@@ -29,8 +29,8 @@ func TestIIRFilterBasic(t *testing.T) {
 	}
 }
 
-// TestIIRFilterFirstOrder проверяет фильтр 1-го порядка
-func TestIIRFilterFirstOrder(t *testing.T) {
+// TestIIRFilter_FirstOrder проверяет фильтр 1-го порядка
+func TestIIRFilter_FirstOrder(t *testing.T) {
 	// Фильтр: y[n] = 0.8*x[n] + 0.2*x[n-1] - 0.5*y[n-1]
 	b := []float64{0.8, 0.2}
 	a := []float64{1, 0.5}
@@ -58,8 +58,8 @@ func TestIIRFilterFirstOrder(t *testing.T) {
 	}
 }
 
-// TestIIRFilterNormalization проверяет нормализацию коэффициентов
-func TestIIRFilterNormalization(t *testing.T) {
+// TestIIRFilter_Normalization проверяет нормализацию коэффициентов
+func TestIIRFilter_Normalization(t *testing.T) {
 	// Коэффициенты с a[0] != 1
 	b := []float64{2.0, 1.0}
 	a := []float64{4.0, 2.0} // a[0] = 4, должно нормализоваться к 1
@@ -90,8 +90,8 @@ func TestIIRFilterNormalization(t *testing.T) {
 	}
 }
 
-// TestFirstOrderLowPass проверяет ФНЧ 1-го порядка
-func TestFirstOrderLowPass(t *testing.T) {
+// TestIIRFilter_FirstOrderLowPass проверяет ФНЧ 1-го порядка
+func TestIIRFilter_FirstOrderLowPass(t *testing.T) {
 	fc := 0.1 // Частота среза = 0.1 * Fs/2
 	filter := NewFirstOrderLowPass(fc)
 
@@ -142,8 +142,8 @@ func TestFirstOrderLowPass(t *testing.T) {
 	}
 }
 
-// TestFirstOrderHighPass проверяет ФВЧ 1-го порядка
-func TestFirstOrderHighPass(t *testing.T) {
+// TestIIRFilter_FirstOrderHighPass проверяет ФВЧ 1-го порядка
+func TestIIRFilter_FirstOrderHighPass(t *testing.T) {
 	fc := 0.2 // Частота среза
 	filter := NewFirstOrderHighPass(fc)
 
@@ -155,7 +155,7 @@ func TestFirstOrderHighPass(t *testing.T) {
 	// На нулевой частоте усиление должно быть ~0
 	h0 := filter.GetFrequencyResponse(0.0)
 	gainDC := cmplx.Abs(h0)
-	// Для ФВЧ на постоянном токе усиление должно быть очень малым
+	// Для ФВЧ на постоянном токе усиление должно быть очень малым,
 	// но не обязательно точно 0 из-за квантования
 	if gainDC > 0.05 { // Ослабление не менее 20 дБ
 		t.Errorf("Усиление на постоянном токе: ожидалось <0.05, получено %f", gainDC)
@@ -195,8 +195,8 @@ func TestFirstOrderHighPass(t *testing.T) {
 	}
 }
 
-// TestFirstOrderHighPassButterworth проверяет ФВЧ 1-го порядка Баттерворта
-func TestFirstOrderHighPassButterworth(t *testing.T) {
+// TestIIRFilter_FirstOrderHighPassButterworth проверяет ФВЧ 1-го порядка Баттерворта
+func TestIIRFilter_FirstOrderHighPassButterworth(t *testing.T) {
 	// Более точная реализация ФВЧ 1-го порядка (билинейное преобразование)
 	fc := 0.2
 
@@ -204,13 +204,13 @@ func TestFirstOrderHighPassButterworth(t *testing.T) {
 	// Для ФВЧ Баттерворта 1-го порядка
 	wc := 2.0 * math.Pi * fc
 	// Предыскажение частоты для билинейного преобразования
-	omega_c := math.Tan(wc / 2.0)
+	omegaC := math.Tan(wc / 2.0)
 
 	// Коэффициенты для ФВЧ 1-го порядка
 	//K := omega_c / (1 + omega_c)
-	b0 := 1.0 / (1 + omega_c)
+	b0 := 1.0 / (1 + omegaC)
 	b1 := -b0
-	a1 := (1 - omega_c) / (1 + omega_c)
+	a1 := (1 - omegaC) / (1 + omegaC)
 
 	filter := NewIIRFilter([]float64{b0, b1}, []float64{1, -a1})
 
@@ -235,8 +235,8 @@ func TestFirstOrderHighPassButterworth(t *testing.T) {
 	t.Logf("  Усиление на 0.45: %.6f", cmplx.Abs(filter.GetFrequencyResponse(0.45)))
 }
 
-// TestSecondOrderLowPass проверяет ФНЧ 2-го порядка
-func TestSecondOrderLowPass(t *testing.T) {
+// TestIIRFilter_SecondOrderLowPass проверяет ФНЧ 2-го порядка
+func TestIIRFilter_SecondOrderLowPass(t *testing.T) {
 	fc := 0.1
 	Q := 0.707 // Баттерворт
 	filter := NewSecondOrderLowPass(fc, Q)
@@ -264,8 +264,8 @@ func TestSecondOrderLowPass(t *testing.T) {
 	}
 }
 
-// TestSecondOrderBandPass проверяет полосовой фильтр 2-го порядка
-func TestSecondOrderBandPass(t *testing.T) {
+// TestIIRFilter_SecondOrderBandPass проверяет полосовой фильтр 2-го порядка
+func TestIIRFilter_SecondOrderBandPass(t *testing.T) {
 	fc := 0.25 // Центральная частота
 	Q := 5.0   // Высокая добротность
 	filter := NewSecondOrderBandPass(fc, Q)
@@ -297,8 +297,8 @@ func TestSecondOrderBandPass(t *testing.T) {
 	}
 }
 
-// TestIIRFilterReset проверяет сброс фильтра
-func TestIIRFilterReset(t *testing.T) {
+// TestIIRFilter_Reset проверяет сброс фильтра
+func TestIIRFilter_Reset(t *testing.T) {
 	b := []float64{0.5, 0.3}
 	a := []float64{1, 0.2, 0.1}
 	filter := NewIIRFilter(b, a)
@@ -324,8 +324,8 @@ func TestIIRFilterReset(t *testing.T) {
 	}
 }
 
-// TestIIRFilterProcess проверяет обработку среза данных
-func TestIIRFilterProcess(t *testing.T) {
+// TestIIRFilter_Process проверяет обработку среза данных
+func TestIIRFilter_Process(t *testing.T) {
 	b := []float64{0.8, 0.2}
 	a := []float64{1, -0.5}
 	filter := NewIIRFilter(b, a)
@@ -348,8 +348,8 @@ func TestIIRFilterProcess(t *testing.T) {
 	}
 }
 
-// TestIIRFilterStability проверяет устойчивость фильтров
-func TestIIRFilterStability(t *testing.T) {
+// TestIIRFilter_Stability проверяет устойчивость фильтров
+func TestIIRFilter_Stability(t *testing.T) {
 	// Устойчивый фильтр (полюса внутри единичной окружности)
 	b1 := []float64{0.5}
 	a1 := []float64{1, 0.3} // |0.3| < 1
@@ -375,8 +375,8 @@ func TestIIRFilterStability(t *testing.T) {
 	}
 }
 
-// TestIIRFilterFrequencyResponse проверяет вычисление частотной характеристики
-func TestIIRFilterFrequencyResponse(t *testing.T) {
+// TestIIRFilter_FrequencyResponse проверяет вычисление частотной характеристики
+func TestIIRFilter_FrequencyResponse(t *testing.T) {
 	// Простой фильтр 1-го порядка
 	b := []float64{1.0}
 	a := []float64{1, -0.5}
@@ -399,8 +399,8 @@ func TestIIRFilterFrequencyResponse(t *testing.T) {
 	}
 }
 
-// TestIIRFilterGroupDelay проверяет вычисление групповой задержки
-func TestIIRFilterGroupDelay(t *testing.T) {
+// TestIIRFilter_GroupDelay проверяет вычисление групповой задержки
+func TestIIRFilter_GroupDelay(t *testing.T) {
 	// Фильтр 1-го порядка с положительной задержкой
 	b := []float64{0.5}
 	a := []float64{1, -0.3}
@@ -440,8 +440,8 @@ func TestIIRFilterGroupDelay(t *testing.T) {
 	}
 }
 
-// TestIIRFilterWithDifferentLengths проверяет фильтр с разной длиной коэффициентов
-func TestIIRFilterWithDifferentLengths(t *testing.T) {
+// TestIIRFilter_WithDifferentLengths проверяет фильтр с разной длиной коэффициентов
+func TestIIRFilter_WithDifferentLengths(t *testing.T) {
 	// b длиннее a
 	b1 := []float64{0.5, 0.3, 0.2}
 	a1 := []float64{1, 0.1}
@@ -461,8 +461,8 @@ func TestIIRFilterWithDifferentLengths(t *testing.T) {
 	}
 }
 
-// TestIIRFilterEmptyCoeffs проверяет обработку пустых коэффициентов
-func TestIIRFilterEmptyCoeffs(t *testing.T) {
+// TestIIRFilter_EmptyCoeffs проверяет обработку пустых коэффициентов
+func TestIIRFilter_EmptyCoeffs(t *testing.T) {
 	// Пустые b коэффициенты
 	defer func() {
 		if r := recover(); r == nil {
@@ -480,8 +480,8 @@ func TestIIRFilterEmptyCoeffs(t *testing.T) {
 	_ = NewIIRFilter([]float64{0.5}, []float64{})
 }
 
-// BenchmarkIIRFilterTick тестирует производительность БИХ-фильтра
-func BenchmarkIIRFilterTick(b *testing.B) {
+// BenchmarkIIRFilter_Tick тестирует производительность БИХ-фильтра
+func BenchmarkIIRFilter_Tick(b *testing.B) {
 	// Фильтр 2-го порядка
 	filter := NewSecondOrderLowPass(0.1, 0.707)
 
@@ -491,8 +491,8 @@ func BenchmarkIIRFilterTick(b *testing.B) {
 	}
 }
 
-// BenchmarkIIRFilterProcess тестирует производительность обработки среза
-func BenchmarkIIRFilterProcess(b *testing.B) {
+// BenchmarkIIRFilter_Process тестирует производительность обработки среза
+func BenchmarkIIRFilter_Process(b *testing.B) {
 	filter := NewSecondOrderLowPass(0.1, 0.707)
 	input := make([]float64, 1000)
 	for i := range input {
