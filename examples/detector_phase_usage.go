@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/Alexxtn105/dsp_go/pkg/detectors"
 	"math"
 	"math/cmplx"
+
+	"github.com/Alexxtn105/dsp/detectors"
 )
 
 func main() {

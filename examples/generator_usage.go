@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/Alexxtn105/dsp_go/pkg/generators"
 	"math"
+
+	"github.com/Alexxtn105/dsp/generators"
 )
 
 func main() {
